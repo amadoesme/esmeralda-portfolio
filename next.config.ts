@@ -1,12 +1,21 @@
 import type { NextConfig } from "next";
 
+const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1];
+const githubPagesBasePath =
+  process.env.GITHUB_ACTIONS === "true" &&
+  repositoryName &&
+  !repositoryName.endsWith(".github.io")
+    ? `/${repositoryName}`
+    : "";
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "export",
+  basePath: githubPagesBasePath,
+  assetPrefix: githubPagesBasePath,
+  trailingSlash: true,
   experimental: {
     agentFeedback: true,
   },
-  cacheComponents: true,
-  partialPrefetching: true,
   turbopack: {
     rules: {
       "*.css": {
